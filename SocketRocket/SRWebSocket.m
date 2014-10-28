@@ -573,18 +573,7 @@ static __strong NSData *CRLFCRLF;
     
     if (_secure) {
         NSMutableDictionary *SSLOptions = [[NSMutableDictionary alloc] init];
-        
         [_outputStream setProperty:(__bridge id)kCFStreamSocketSecurityLevelNegotiatedSSL forKey:(__bridge id)kCFStreamPropertySocketSecurityLevel];
-        
-        // If we're using pinned certs, don't validate the certificate chain
-        if ([_urlRequest SR_SSLPinnedCertificates].count) {
-            [SSLOptions setValue:[NSNumber numberWithBool:NO] forKey:(__bridge id)kCFStreamSSLValidatesCertificateChain];
-        }
-        
-#if DEBUG
-        [SSLOptions setValue:[NSNumber numberWithBool:NO] forKey:(__bridge id)kCFStreamSSLValidatesCertificateChain];
-        NSLog(@"SocketRocket: In debug mode.  Allowing connection to any root cert");
-#endif
         
         [_outputStream setProperty:SSLOptions
                             forKey:(__bridge id)kCFStreamPropertySSLSettings];
